@@ -20,23 +20,23 @@ for j=1:length (orderpto)
    try 
      figure ; plot (timeto(1:end),yyt,timeto(1:end),micropost,timeto(locs),micropost(locs),'o');hold on
    catch err
-       figure ; plot (timeto(1:end-1),yyt,timeto(1:end-1),micropost,timeto(locs),micropost(locs),'o');hold on
+%        figure ; plot (timeto(1:end-1),yyt,timeto(1:end-1),micropost,timeto(locs),micropost(locs),'o');hold on
    end
     [pksindexrow,pksindexcol] = find((pks>0.3));
     locs = locs (pksindexrow);
     DataInv = 1.01*max(micropost ) - micropost ;
     [Minima,MinIdx] = findpeaks(DataInv,'MinPeakProminence',0.12);
     Minima = micropost (MinIdx);
-    timespeaks= (timeto(locs));
+%     timespeaks= (timeto(locs));
     timespeaksmin= (timeto(MinIdx));
     if isempty(MinIdx)
         locs=locs(1);
     end
-    try
-        plot (timeto(1:end),yyt,timeto(1:end),micropost,timeto(locs),micropost(locs),'o',timeto(MinIdx),micropost(MinIdx),'s');hold off
-    catch err
-         plot (timeto(1:end-1),yyt,timeto(1:end-1),micropost,timeto(locs),micropost(locs),'o',timeto(MinIdx),micropost(MinIdx),'s');hold off
-    end
+%     try
+%         plot (timeto(1:end),yyt,timeto(1:end),micropost,timeto(locs),micropost(locs),'o',timeto(MinIdx),micropost(MinIdx),'s');hold off
+%     catch err
+%          plot (timeto(1:end-1),yyt,timeto(1:end-1),micropost,timeto(locs),micropost(locs),'o',timeto(MinIdx),micropost(MinIdx),'s');hold off
+%     end
     i=0;
     for i=1:length(locs)
         if i ==1

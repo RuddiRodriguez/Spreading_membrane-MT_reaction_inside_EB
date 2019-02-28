@@ -6,7 +6,7 @@ if nargin < 1 || isempty (kappa)
     %ratesi = [1.5 16.5 1500 1500 500 500 910 729 0.007 733 0.9];% speed 4.8
     % ratesi = [1.5 16.5 1500 1500 500 500 910 729 0.007 733 0.9];% speed 4.8
      % ratesi = [1.5 16.5 1500 1500 500 500 910 729 0.007 733 0.9];% speed 
-    ratesi = [1.5 40 10000 10000 600 600 810 729 0.012 733 0.0001];%test
+    ratesi = [1.6 16 20000 20000 500 500 810 620 0.012 733 0.00051];%test
     %ratesi = [[9.23076923076923e-05,0.00101538461538462,1,1,0.0615384615384615,0.0615384615384615,0.0498461538461538,0.0448615384615385,1.23076923076923e-06,0.00615384615384615,4.30769230769231e-06]];
 %     Pb = ratesi(1,2)./(ratesi(1,1)+ratesi(1,2));
 %     Pu = ratesi(1,1)./(ratesi(1,1)+ratesi(1,2));
@@ -19,7 +19,7 @@ end
 
 if nargin < 2 || isempty (kappa)
     
-    kappa =[  5].*1e-20;
+    kappa =[  4.45].*1e-20;
 end
 
 if nargin < 3 || isempty (sigmai)
@@ -29,7 +29,7 @@ end
 
 if nargin < 4
     
-    maxsimutime =300
+    maxsimutime =50
 end
 
 if nargin < 5
@@ -54,31 +54,34 @@ end
 
 %% Loading EB gradient profile  
 %filename = '/Users/ruddirodriguez/Dropbox/Data_analysis/Data_analysis/Prisma/In_vitro_membrane_deformation/TXTdata/Profileintensity/EB_200.txt';
-filename = 'D:\Users_data\Ruddi\Dropbox\Data_analysis\Data_analysis\Prisma\In_vitro_membrane_deformation\TXTdata\Profileintensity\EB_200.txt';
+filename = 'D:\Users_data\Ruddi\Dropbox\Data_analysis\Data_analysis\Prisma\In_vitro_membrane_deformation\EB_profiles_for_simulations\EB200.txt';
 
 EB1 = importfile_profile_matrix(filename);
-grad=3.*((EB1(1:300,2))./10);%
+grad=3.*0.43.*((EB1(1:300,2))./1.6);%
 grad =sort (grad,'ascend');
+grad(grad~=0.5)=0.5;
 %%
 
 figure ;
-numsi=1;
+numsi=3;
 results = cell (numsi,length(densityindex),length(kappa));
 MTLent= cell (numsi,length(densityindex),length(kappa)); 
 parameters = cell (numsi,length(densityindex),length(kappa)); 
 MTarryocupationt = cell (numsi,length(densityindex),length(kappa));
 ocupationnumbert = cell (numsi,length(densityindex),length(kappa));
 vt= 0 ;
-vmm=0.036
+vmm=0.1
 for j =1:length(kappa)
     j
     for k =1:length(densityindex)
        
         vinterp=0;
         for i=1:numsi
-%                maxsimutime =80+(120-80)*rand(1,1);
-              sigmai = 2e-7+(7e-7-2e-7)*rand(1,1);
+%                 maxsimutime =80+(120-80)*rand(1,1);
+              maxsimutime =180+(220-180)*rand(1,1);
+            %sigmai = 3e-7+(5e-6-3e-7)*rand(1,1);
             npin = randi([1 3],1,1);
+             sigmai = 9e-8+10e-7.*rand(1,1);
             [pos,times,globalrate,arrayrates,MTarryocupation,ocupationnumber,vector,interpovar,controldensity,vinterp,vinterpMTL,MTLt,R_ini,r0_ini] = membrane_position_MT_Infinit_family_reaction (ratesi,...
                 kappa(j),sigmai,maxsimutime,npin,density(1),initubel,densityindex(k),vmm,grad);
             
